@@ -2,8 +2,10 @@ import pygame
 import serial
 import time
 
+# SDC Python Code
+
 # Connect to Arduino
-arduino = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+arduino = serial.Serial('/dev/ttyACM0', 9600, timeout=1) # device might need to be fixed later
 time.sleep(2)
 
 # Initialize Xbox controller

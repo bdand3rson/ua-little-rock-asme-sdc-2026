@@ -10,6 +10,7 @@
             "includePath": [
                 "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/include",
                 "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/src",
+                "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/.pio/libdeps/megaatmega2560/Servo/src",
                 "C:/Users/katab/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/katab/.platformio/packages/framework-arduino-avr/variants/mega",
                 "C:/Users/katab/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -24,6 +25,7 @@
                 "path": [
                     "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/include",
                     "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/src",
+                    "C:/Users/katab/Documents/ASME Code 2026/ASME-SDC2026-Code/ua-little-rock-asme-sdc-2026/.pio/libdeps/megaatmega2560/Servo/src",
                     "C:/Users/katab/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/katab/.platformio/packages/framework-arduino-avr/variants/mega",
                     "C:/Users/katab/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
