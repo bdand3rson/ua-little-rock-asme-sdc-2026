@@ -1,8 +1,13 @@
 #include <Arduino.h>
 #include <Servo.h>
+// UA Little Rock ASME SDC 2026 Algorithm
 
-
-#define DIR_M1 22
+// Drivetrain Motors
+// M1: 
+// M2:
+// M3:
+// M4:
+#define DIR_M1 22 // <-- Number here means what pin on the Arduino Mega
 #define PWM_M1 2
 #define DIR_M2 23
 #define PWM_M2 3
@@ -10,6 +15,20 @@
 #define PWM_M3 4
 #define DIR_M4 25
 #define PWM_M4 5
+// Arm Motor
+// M5: 
+//#define DIR_M5 
+#define PWM_M5 
+// Wrist and Claw Servos
+// S1: Wrist
+// S2: Claw Rotate
+// S3: Claw Grasp
+//#define
+//#define
+//#define
+//#define
+//#define
+//#define
 
 void setup() {
   pinMode(DIR_M1, OUTPUT);
