@@ -1,28 +1,32 @@
 #include <Arduino.h>
 #include <Servo.h>
-
+// UA Little Rock ASME SDC 2026 Algorithm
 // ==========================
-// DRIVE MOTOR PINS
+// DRIVE MOTOR PINS  - VEX 393 Motors 7 volts
 // ==========================
 #define LEFT_IN1   22
 #define LEFT_IN2   23
-#define LEFT_PWM   5
+#define LEFT_PWM   5  //ENA A
 
 #define RIGHT_IN1  24
 #define RIGHT_IN2  25
-#define RIGHT_PWM  6
+#define RIGHT_PWM  6  //ENA B
 
 // ==========================
 // ARM MOTOR PINS
 // ==========================
-#define ARM_IN1    26
+#define ARM_IN1    26  // Large BEST Robotics Motor 12 volts
 #define ARM_IN2    27
-#define ARM_PWM    7
-
+#define ARM_PWM    7  //ENA A
+/*
+#define ARM2_IN1   28 // VEX 393 Motor 7 volts
+#define ARM2_IN2   29
+#define ARM2_PWM   8  //ENA A
+*/
 // ==========================
 // SERVO PINS
 // ==========================
-#define SERVO1_PIN 9
+#define SERVO1_PIN 9  // Will be replaced with VEX 393 soon
 #define SERVO2_PIN 10
 #define CLAW_PIN   11
 
@@ -34,17 +38,17 @@ Servo claw;
 // Servo positions
 // Adjust these after testing
 // ==========================
-int servo1Pos = 90;
-int servo2Pos = 180;
-int clawPos   = 90;
+int servo1Pos = 90;  // Will be replaced with VEX 393 soon
+int servo2Pos = 180; // This should be good
+int clawPos   = 90; // This should be good
 
-const int SERVO1_MIN = 20;
+const int SERVO1_MIN = 20; // Will be replaced with VEX 393 soon
 const int SERVO1_MAX = 160;
 
-const int SERVO2_MIN = 0;
+const int SERVO2_MIN = 0;  // These should be good
 const int SERVO2_MAX = 180;
 
-const int CLAW_MIN = 40;
+const int CLAW_MIN = 40; // These should be good
 const int CLAW_MAX = 160;
 
 // ==========================
