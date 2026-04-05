@@ -18,19 +18,19 @@
 #define ARM_IN1    26  // Large BEST Robotics Motor 12 volts
 #define ARM_IN2    27
 #define ARM_PWM    7  //ENA A
-/*
+
 #define ARM2_IN1   28 // VEX 393 Motor 7 volts
 #define ARM2_IN2   29
 #define ARM2_PWM   8  //ENA A
-*/
+
 // ==========================
 // SERVO PINS
 // ==========================
-#define SERVO1_PIN 9  // Will be replaced with VEX 393 soon
+//#define SERVO1_PIN 9  // Will be replaced with VEX 393 soon
 #define SERVO2_PIN 10
 #define CLAW_PIN   11
 
-Servo servo1;
+//Servo servo1;
 Servo servo2;
 Servo claw;
 
@@ -38,12 +38,12 @@ Servo claw;
 // Servo positions
 // Adjust these after testing
 // ==========================
-int servo1Pos = 90;  // Will be replaced with VEX 393 soon
+//int servo1Pos = 90;  // Will be replaced with VEX 393 soon
 int servo2Pos = 180; // This should be good
 int clawPos   = 90; // This should be good
 
-const int SERVO1_MIN = 20; // Will be replaced with VEX 393 soon
-const int SERVO1_MAX = 160;
+//const int SERVO1_MIN = 20; // Will be replaced with VEX 393 soon
+//const int SERVO1_MAX = 160;
 
 const int SERVO2_MIN = 0;  // These should be good
 const int SERVO2_MAX = 180;
@@ -155,7 +155,20 @@ void loop() {
         }
       }
 
+
       // --------------------------
+      // ARM2,speed
+      // --------------------------
+      else if (input.startsWith("ARM,")) {
+        int comma = input.indexOf(',');
+        if (comma > 0) {
+          int armSpeed = input.substring(comma + 1).toInt();
+          armSpeed = constrain(armSpeed, -255, 255);
+          setMotor(ARM_IN1, ARM_IN2, ARM_PWM, armSpeed, invertArm);
+        }
+      }
+
+      /*// --------------------------
       // SERVO1,dir
       // dir = -1, 0, 1
       // --------------------------
@@ -169,7 +182,7 @@ void loop() {
           servo1Pos = constrain(servo1Pos, SERVO1_MIN, SERVO1_MAX);
           servo1.write(servo1Pos);
         }
-      }
+      }*/
 
       // --------------------------
       // SERVO2,dir

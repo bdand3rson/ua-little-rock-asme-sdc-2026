@@ -55,17 +55,25 @@ try:
         else:
             arduino.write(b"ARM,0\n")
 
+        # ARM 2(A/B)
+        if joystick.get_button(0):
+            arduino.write(b"ARM2,255\n")
+        elif joystick.get_button(1):
+            arduino.write(b"ARM2,-255\n")
+        else:
+            arduino.write(b"ARM2,0\n")
+
         # --------------------
         # SERVOS
         # --------------------
 
-        # Servo 1 (A/B)
+        """ # Servo 1 (A/B)
         if joystick.get_button(0):
             arduino.write(b"SERVO1,-1\n")
         elif joystick.get_button(1):
             arduino.write(b"SERVO1,1\n")
         else:
-            arduino.write(b"SERVO1,0\n")
+            arduino.write(b"SERVO1,0\n") """
 
         # Servo 2 (X/Y)
         if joystick.get_button(3):
