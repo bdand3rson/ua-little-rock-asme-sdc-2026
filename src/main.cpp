@@ -61,6 +61,7 @@ const int CLAW_MAX = 160;
 bool invertLeftDrive  = true;
 bool invertRightDrive = false;
 bool invertArm        = false;
+bool invertArm2        = false;
 
 // ==========================
 void setMotor(int in1, int in2, int pwmPin, int speed, bool invertDirection = false) {
@@ -91,6 +92,7 @@ void stopAll() {
   setMotor(LEFT_IN1, LEFT_IN2, LEFT_PWM, 0, invertLeftDrive);
   setMotor(RIGHT_IN1, RIGHT_IN2, RIGHT_PWM, 0, invertRightDrive);
   setMotor(ARM_IN1, ARM_IN2, ARM_PWM, 0, invertArm);
+  setMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM, 0, invertArm2);
 }
 
 void setup() {
@@ -106,11 +108,15 @@ void setup() {
   pinMode(ARM_IN2, OUTPUT);
   pinMode(ARM_PWM, OUTPUT);
 
-  servo1.attach(SERVO1_PIN);
+  pinMode(ARM2_IN1, OUTPUT);
+  pinMode(ARM2_IN2, OUTPUT);
+  pinMode(ARM2_PWM, OUTPUT);
+
+  //servo1.attach(SERVO1_PIN);
   servo2.attach(SERVO2_PIN);
   claw.attach(CLAW_PIN);
 
-  servo1.write(servo1Pos);
+  //servo1.write(servo1Pos);
   servo2.write(servo2Pos);
   claw.write(clawPos);
 
