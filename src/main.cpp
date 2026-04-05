@@ -23,6 +23,9 @@
 #define ARM2_IN2   29
 #define ARM2_PWM   8  //ENA A
 
+#define ARM2_IN1 28
+#define ARM2_IN2 29
+#define ARM2_PWM 12
 // ==========================
 // SERVO PINS
 // ==========================
