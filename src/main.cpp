@@ -19,6 +19,9 @@
 #define ARM_IN2    27
 #define ARM_PWM    7
 
+#define ARM2_IN1 28
+#define ARM2_IN2 29
+#define ARM2_PWM 12
 // ==========================
 // SERVO PINS
 // ==========================
