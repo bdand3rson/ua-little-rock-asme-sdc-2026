@@ -23,9 +23,7 @@
 #define ARM2_IN2   29
 #define ARM2_PWM   8  //ENA A
 
-#define ARM2_IN1 28
-#define ARM2_IN2 29
-#define ARM2_PWM 12
+
 // ==========================
 // SERVO PINS
 // ==========================
@@ -86,6 +84,14 @@ void setMotor(int in1, int in2, int pwmPin, int speed, bool invertDirection = fa
     digitalWrite(in2, LOW);
     analogWrite(pwmPin, 0);
   }
+}
+
+
+void brakeMotor(int in1, int in2, int pwmPin) {
+  // Dynamic braking for L298N-style driver
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, HIGH);
+  analogWrite(pwmPin, 255);
 }
 
 void stopAll() {
@@ -156,26 +162,36 @@ void loop() {
       // ARM,speed
       // --------------------------
       else if (input.startsWith("ARM,")) {
-        int comma = input.indexOf(',');
-        if (comma > 0) {
-          int armSpeed = input.substring(comma + 1).toInt();
-          armSpeed = constrain(armSpeed, -255, 255);
-          setMotor(ARM_IN1, ARM_IN2, ARM_PWM, armSpeed, invertArm);
-        }
-      }
+  int comma = input.indexOf(',');
+  if (comma > 0) {
+    int armSpeed = input.substring(comma + 1).toInt();
+    armSpeed = constrain(armSpeed, -255, 255);
+
+    if (armSpeed == 0) {
+      brakeMotor(ARM_IN1, ARM_IN2, ARM_PWM);
+    } else {
+      setMotor(ARM_IN1, ARM_IN2, ARM_PWM, armSpeed, invertArm);
+    }
+  }
+}
 
 
       // --------------------------
       // ARM2,speed
       // --------------------------
-      else if (input.startsWith("ARM,")) {
-        int comma = input.indexOf(',');
-        if (comma > 0) {
-          int armSpeed = input.substring(comma + 1).toInt();
-          armSpeed = constrain(armSpeed, -255, 255);
-          setMotor(ARM_IN1, ARM_IN2, ARM_PWM, armSpeed, invertArm);
-        }
-      }
+      else if (input.startsWith("ARM2,")) {
+  int comma = input.indexOf(',');
+  if (comma > 0) {
+    int armSpeed = input.substring(comma + 1).toInt();
+    armSpeed = constrain(armSpeed, -255, 255);
+
+    if (armSpeed == 0) {
+      brakeMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM);
+    } else {
+      setMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM, armSpeed, invertArm2);
+    }
+  }
+}
 
       /*// --------------------------
       // SERVO1,dir

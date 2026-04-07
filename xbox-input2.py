@@ -48,17 +48,19 @@ try:
         # --------------------
         # ARM MOTOR
         # --------------------
-        if joystick.get_button(4):  # LB
+        if joystick.get_button(0):  # LB
             arduino.write(b"ARM,255\n")
-        elif joystick.get_button(5):  # RB
+        elif joystick.get_button(1):  # RB
             arduino.write(b"ARM,-255\n")
         else:
             arduino.write(b"ARM,0\n")
 
+        hat = joystick.get_hat(0)
+        
         # ARM 2(A/B)
-        if joystick.get_button(0):
+        if hat == (0, -1):
             arduino.write(b"ARM2,255\n")
-        elif joystick.get_button(1):
+        elif hat == (0, 1):
             arduino.write(b"ARM2,-255\n")
         else:
             arduino.write(b"ARM2,0\n")
@@ -84,7 +86,7 @@ try:
             arduino.write(b"SERVO2,0\n")
 
         # Claw (D-pad left/right)
-        hat = joystick.get_hat(0)
+        
 
         if hat == (-1, 0):
             arduino.write(b"CLAW,-1\n")
