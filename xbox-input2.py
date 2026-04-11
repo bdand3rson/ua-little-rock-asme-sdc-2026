@@ -46,7 +46,7 @@ try:
         arduino.write(f"DRIVE,{left_speed},{right_speed}\n".encode())
 
         # --------------------
-        # ARM SERVO
+        # ARM (continuous servo)
         # A / B buttons
         # --------------------
         if joystick.get_button(0):       # A
@@ -57,7 +57,7 @@ try:
             arduino.write(b"ARM,0\n")
 
         # --------------------
-        # ARM2 SERVO
+        # ARM2 (positional servo)
         # D-pad up / down
         # --------------------
         hat = joystick.get_hat(0)
