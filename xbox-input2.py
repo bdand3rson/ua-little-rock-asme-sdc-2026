@@ -3,7 +3,7 @@ import serial
 import time
 
 # ---- SETTINGS ----
-SERIAL_PORT = '//dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_4343935353635150E260-if00'
+SERIAL_PORT = '/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_4343935353635150E260-if00'
 BAUD_RATE = 9600
 DEADZONE = 0.15
 
@@ -42,55 +42,51 @@ try:
         left_speed = int(left_input * 255)
         right_speed = int(right_input * 255)
 
-        # send to Arduino
+        # send drive command
         arduino.write(f"DRIVE,{left_speed},{right_speed}\n".encode())
 
         # --------------------
-        # ARM MOTOR
+        # ARM SERVO
+        # A / B buttons
         # --------------------
-        if joystick.get_button(0):  # LB
-            arduino.write(b"ARM,255\n")
-        elif joystick.get_button(1):  # RB
-            arduino.write(b"ARM,-255\n")
+        if joystick.get_button(0):       # A
+            arduino.write(b"ARM,-1\n")
+        elif joystick.get_button(1):     # B
+            arduino.write(b"ARM,1\n")
         else:
             arduino.write(b"ARM,0\n")
 
+        # --------------------
+        # ARM2 SERVO
+        # D-pad up / down
+        # --------------------
         hat = joystick.get_hat(0)
-        
-        # ARM 2(A/B)
-        if hat == (0, -1):
-            arduino.write(b"ARM2,255\n")
-        elif hat == (0, 1):
-            arduino.write(b"ARM2,-255\n")
+
+        if hat == (0, 1):                # D-pad up
+            arduino.write(b"ARM2,1\n")
+        elif hat == (0, -1):             # D-pad down
+            arduino.write(b"ARM2,-1\n")
         else:
             arduino.write(b"ARM2,0\n")
 
         # --------------------
-        # SERVOS
+        # SERVO2
+        # X / Y buttons
         # --------------------
-
-        """ # Servo 1 (A/B)
-        if joystick.get_button(0):
-            arduino.write(b"SERVO1,-1\n")
-        elif joystick.get_button(1):
-            arduino.write(b"SERVO1,1\n")
-        else:
-            arduino.write(b"SERVO1,0\n") """
-
-        # Servo 2 (X/Y)
-        if joystick.get_button(3):
+        if joystick.get_button(2):       # X
             arduino.write(b"SERVO2,-1\n")
-        elif joystick.get_button(4):
+        elif joystick.get_button(3):     # Y
             arduino.write(b"SERVO2,1\n")
         else:
             arduino.write(b"SERVO2,0\n")
 
-        # Claw (D-pad left/right)
-        
-
-        if hat == (-1, 0):
+        # --------------------
+        # CLAW
+        # D-pad left / right
+        # --------------------
+        if hat == (-1, 0):               # D-pad left
             arduino.write(b"CLAW,-1\n")
-        elif hat == (1, 0):
+        elif hat == (1, 0):              # D-pad right
             arduino.write(b"CLAW,1\n")
         else:
             arduino.write(b"CLAW,0\n")
