@@ -1,65 +1,61 @@
 #include <Arduino.h>
 #include <Servo.h>
+
 // UA Little Rock ASME SDC 2026 Algorithm
+
 // ==========================
-// DRIVE MOTOR PINS  - VEX 393 Motors 7 volts
+// DRIVE MOTOR PINS - VEX 393 Motors
 // ==========================
 #define LEFT_IN1   22
 #define LEFT_IN2   23
-#define LEFT_PWM   5  //ENA A
+#define LEFT_PWM   5
 
 #define RIGHT_IN1  24
 #define RIGHT_IN2  25
-#define RIGHT_PWM  6  //ENA B
-
-// ==========================
-// ARM MOTOR PINS
-// ==========================
-#define ARM_IN1    26  // Large BEST Robotics Motor 12 volts
-#define ARM_IN2    27
-#define ARM_PWM    7  //ENA A
-
-#define ARM2_IN1   28 // VEX 393 Motor 7 volts
-#define ARM2_IN2   29
-#define ARM2_PWM   8  //ENA A
-
+#define RIGHT_PWM  6
 
 // ==========================
 // SERVO PINS
 // ==========================
-//#define SERVO1_PIN 9  // Will be replaced with VEX 393 soon
-#define SERVO2_PIN 10
-#define CLAW_PIN   11
+#define ARM_PIN     9
+#define ARM2_PIN    12
+#define SERVO2_PIN  10
+#define CLAW_PIN    11
 
-//Servo servo1;
+Servo arm;
+Servo arm2;
 Servo servo2;
 Servo claw;
 
 // ==========================
 // Servo positions
-// Adjust these after testing
 // ==========================
-//int servo1Pos = 90;  // Will be replaced with VEX 393 soon
-int servo2Pos = 180; // This should be good
-int clawPos   = 90; // This should be good
+int armPos    = 90;
+int arm2Pos   = 90;
+int servo2Pos = 180;
+int clawPos   = 90;
 
-//const int SERVO1_MIN = 20; // Will be replaced with VEX 393 soon
-//const int SERVO1_MAX = 160;
+// ==========================
+// Servo limits
+// Adjust after testing
+// ==========================
+const int ARM_MIN    = 20;
+const int ARM_MAX    = 160;
 
-const int SERVO2_MIN = 0;  // These should be good
+const int ARM2_MIN   = 20;
+const int ARM2_MAX   = 160;
+
+const int SERVO2_MIN = 0;
 const int SERVO2_MAX = 180;
 
-const int CLAW_MIN = 40; // These should be good
-const int CLAW_MAX = 160;
+const int CLAW_MIN   = 40;
+const int CLAW_MAX   = 160;
 
 // ==========================
-// Optional motor inversion
-// Flip true if motion is backwards
+// Optional drive inversion
 // ==========================
 bool invertLeftDrive  = true;
 bool invertRightDrive = false;
-bool invertArm        = false;
-bool invertArm2        = false;
 
 // ==========================
 void setMotor(int in1, int in2, int pwmPin, int speed, bool invertDirection = false) {
@@ -86,19 +82,9 @@ void setMotor(int in1, int in2, int pwmPin, int speed, bool invertDirection = fa
   }
 }
 
-
-void brakeMotor(int in1, int in2, int pwmPin) {
-  // Dynamic braking for L298N-style driver
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, HIGH);
-  analogWrite(pwmPin, 255);
-}
-
-void stopAll() {
+void stopDrive() {
   setMotor(LEFT_IN1, LEFT_IN2, LEFT_PWM, 0, invertLeftDrive);
   setMotor(RIGHT_IN1, RIGHT_IN2, RIGHT_PWM, 0, invertRightDrive);
-  setMotor(ARM_IN1, ARM_IN2, ARM_PWM, 0, invertArm);
-  setMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM, 0, invertArm2);
 }
 
 void setup() {
@@ -110,24 +96,18 @@ void setup() {
   pinMode(RIGHT_IN2, OUTPUT);
   pinMode(RIGHT_PWM, OUTPUT);
 
-  pinMode(ARM_IN1, OUTPUT);
-  pinMode(ARM_IN2, OUTPUT);
-  pinMode(ARM_PWM, OUTPUT);
-
-  pinMode(ARM2_IN1, OUTPUT);
-  pinMode(ARM2_IN2, OUTPUT);
-  pinMode(ARM2_PWM, OUTPUT);
-
-  //servo1.attach(SERVO1_PIN);
+  arm.attach(ARM_PIN);
+  arm2.attach(ARM2_PIN);
   servo2.attach(SERVO2_PIN);
   claw.attach(CLAW_PIN);
 
-  //servo1.write(servo1Pos);
+  arm.write(armPos);
+  arm2.write(arm2Pos);
   servo2.write(servo2Pos);
   claw.write(clawPos);
 
   Serial.begin(9600);
-  stopAll();
+  stopDrive();
 }
 
 void loop() {
@@ -159,55 +139,36 @@ void loop() {
       }
 
       // --------------------------
-      // ARM,speed
-      // --------------------------
-      else if (input.startsWith("ARM,")) {
-  int comma = input.indexOf(',');
-  if (comma > 0) {
-    int armSpeed = input.substring(comma + 1).toInt();
-    armSpeed = constrain(armSpeed, -255, 255);
-
-    if (armSpeed == 0) {
-      brakeMotor(ARM_IN1, ARM_IN2, ARM_PWM);
-    } else {
-      setMotor(ARM_IN1, ARM_IN2, ARM_PWM, armSpeed, invertArm);
-    }
-  }
-}
-
-
-      // --------------------------
-      // ARM2,speed
-      // --------------------------
-      else if (input.startsWith("ARM2,")) {
-  int comma = input.indexOf(',');
-  if (comma > 0) {
-    int armSpeed = input.substring(comma + 1).toInt();
-    armSpeed = constrain(armSpeed, -255, 255);
-
-    if (armSpeed == 0) {
-      brakeMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM);
-    } else {
-      setMotor(ARM2_IN1, ARM2_IN2, ARM2_PWM, armSpeed, invertArm2);
-    }
-  }
-}
-
-      /*// --------------------------
-      // SERVO1,dir
+      // ARM,dir
       // dir = -1, 0, 1
       // --------------------------
-      else if (input.startsWith("SERVO1,")) {
+      else if (input.startsWith("ARM,")) {
         int comma = input.indexOf(',');
         if (comma > 0) {
           int dir = input.substring(comma + 1).toInt();
-          if (dir == -1) servo1Pos -= 30;
-          else if (dir == 1) servo1Pos += 30;
+          if (dir == -1) armPos -= 5;
+          else if (dir == 1) armPos += 5;
 
-          servo1Pos = constrain(servo1Pos, SERVO1_MIN, SERVO1_MAX);
-          servo1.write(servo1Pos);
+          armPos = constrain(armPos, ARM_MIN, ARM_MAX);
+          arm.write(armPos);
         }
-      }*/
+      }
+
+      // --------------------------
+      // ARM2,dir
+      // dir = -1, 0, 1
+      // --------------------------
+      else if (input.startsWith("ARM2,")) {
+        int comma = input.indexOf(',');
+        if (comma > 0) {
+          int dir = input.substring(comma + 1).toInt();
+          if (dir == -1) arm2Pos -= 5;
+          else if (dir == 1) arm2Pos += 5;
+
+          arm2Pos = constrain(arm2Pos, ARM2_MIN, ARM2_MAX);
+          arm2.write(arm2Pos);
+        }
+      }
 
       // --------------------------
       // SERVO2,dir
@@ -216,8 +177,8 @@ void loop() {
         int comma = input.indexOf(',');
         if (comma > 0) {
           int dir = input.substring(comma + 1).toInt();
-          if (dir == -1) servo2Pos -= 30;
-          else if (dir == 1) servo2Pos += 30;
+          if (dir == -1) servo2Pos -= 5;
+          else if (dir == 1) servo2Pos += 5;
 
           servo2Pos = constrain(servo2Pos, SERVO2_MIN, SERVO2_MAX);
           servo2.write(servo2Pos);
@@ -231,8 +192,8 @@ void loop() {
         int comma = input.indexOf(',');
         if (comma > 0) {
           int dir = input.substring(comma + 1).toInt();
-          if (dir == -1) clawPos -= 30;
-          else if (dir == 1) clawPos += 30;
+          if (dir == -1) clawPos -= 5;
+          else if (dir == 1) clawPos += 5;
 
           clawPos = constrain(clawPos, CLAW_MIN, CLAW_MAX);
           claw.write(clawPos);
@@ -240,7 +201,7 @@ void loop() {
       }
 
       else if (input == "STOP_ALL") {
-        stopAll();
+        stopDrive();
       }
 
       input = "";
