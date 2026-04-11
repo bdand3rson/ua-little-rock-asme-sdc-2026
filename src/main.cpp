@@ -17,9 +17,9 @@
 // ==========================
 // SERVO PINS
 // ==========================
-#define ARM_PIN     9    // continuous-rotation servo
+#define ARM_PIN     9    // continuous-rotation servo - base
 #define ARM2_PIN    12   // standard positional servo
-#define SERVO2_PIN  10   // standard positional servo
+#define SERVO2_PIN  10   // standard positional servo - wrist
 #define CLAW_PIN    11   // standard positional servo
 
 Servo arm;      // continuous servo
